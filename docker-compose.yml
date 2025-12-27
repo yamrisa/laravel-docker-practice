@@ -1,10 +1,13 @@
 services:
   app:
+    #Laravel の API / Blade
     image: php:8.2-fpm
+    #PC（ホストマシン）側のフォルダをコンテナにコンテナバインド(同期)する
     volumes:
       - ./src:/var/www
     working_dir: /var/www
 
+  #ブラウザからアクセスする入口
   nginx:
     image: nginx:1.25
     ports:
@@ -14,3 +17,12 @@ services:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
+
+  node:
+    image: node:20
+    volumes:
+      - ./src/frontend:/app
+    working_dir: /app
+    #command: sh -c "npm install && npm run dev"
+    #nodeコンテナbashで作業する用
+    command: tail -f /dev/null

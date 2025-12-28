@@ -2,13 +2,17 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    // "rootDir": "./src",
+    "rootDir": "./src",
     // "outDir": "./dist",
+    "outDir": "public",
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
-    "target": "esnext",
+    // "module": "nodenext",
+    // // "target": "esnext",
+    // "target": "ES2020",
+    "target": "ES2017",
+    "module": "ESNext",
     "types": [],
     // For nodejs:
     // "lib": ["esnext"],

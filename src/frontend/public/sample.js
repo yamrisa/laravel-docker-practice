@@ -33,37 +33,60 @@ function changeStatus(id, status) {
     todo.status = status; // 見つかったTodoオブジェクトのstatusプロパティを書き換える
 }
 // UIにToDoを表示する処理
-// todos配列の中身をHTMLに反映する関数、画面に表示するだけなので戻り値は不要（void）
+// todos配列の中身をliタグに反映させる関数、画面に表示するだけなので戻り値は不要（void）
+// function renderTodos(): void {
+//     // HTML側の <ul id="todo-list"> を取得
+//     // document = ブラウザ全体
+//     // getElementById = idで要素を1つ探す
+//     const list = document.getElementById("todo-list")
+//     // 要素が見つからなかった場合の保険
+//     // （HTML側にid="todo-list"が無いとここに入る）
+//     if (!list) {
+//       console.error("todo-list が見つかりません")
+//       return
+//     }
+//     // 既存の表示を一旦すべて消す
+//     // → 再描画時に二重表示されるのを防ぐ
+//     list.innerHTML = ""
+//     // todos配列を1件ずつ取り出す
+//     // todo = Todo型のオブジェクト1つ分
+//     todos.forEach(todo => {
+//       // <li> 要素を新しく作成
+//       const li = document.createElement("li")
+//       // 表示する文字列を設定
+//       // ${} はテンプレートリテラル（値を埋め込める）
+//       li.textContent = `${todo.title} [${todo.status}]`
+//       // 作成した <li> を <ul> の中に追加
+//       list.appendChild(li)
+//     })
+//   }
+//   描画専用の関数を追加　div
 function renderTodos() {
-    // HTML側の <ul id="todo-list"> を取得
-    // document = ブラウザ全体
-    // getElementById = idで要素を1つ探す
-    const list = document.getElementById("todo-list");
-    // 要素が見つからなかった場合の保険
-    // （HTML側にid="todo-list"が無いとここに入る）
-    if (!list) {
-        console.error("todo-list が見つかりません");
+    const listElement = document.getElementById("todo-list");
+    if (!listElement)
         return;
-    }
-    // 既存の表示を一旦すべて消す
-    // → 再描画時に二重表示されるのを防ぐ
-    list.innerHTML = "";
-    // todos配列を1件ずつ取り出す
-    // todo = Todo型のオブジェクト1つ分
+    // 再描画のために一旦空にする
+    listElement.innerHTML = "";
     todos.forEach(todo => {
-        // <li> 要素を新しく作成
-        const li = document.createElement("li");
-        // 表示する文字列を設定
-        // ${} はテンプレートリテラル（値を埋め込める）
-        li.textContent = `${todo.title} [${todo.status}]`;
-        // 作成した <li> を <ul> の中に追加
-        list.appendChild(li);
+        const div = document.createElement("div");
+        const span = document.createElement("span");
+        const button = document.createElement("button");
+        span.textContent = `${todo.id}: ${todo.title} [${todo.status}]`;
+        button.textContent = "削除";
+        button.addEventListener("click", () => {
+            deleteTodo(todo.id);
+            renderTodos();
+        });
+        div.appendChild(span);
+        div.appendChild(button);
+        listElement.appendChild(div);
     });
 }
 // 動かす
 addTodo("やること１");
 addTodo("やること２");
 changeStatus(1, "doing");
+changeStatus(2, "done");
 renderTodos();
 export {};
 //# sourceMappingURL=sample.js.map
